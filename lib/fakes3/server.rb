@@ -257,8 +257,9 @@ module FakeS3
 
     def do_OPTIONS(request, response)
       super
-      response["Access-Control-Allow-Origin"]="*"
-      response['Access-Control-Allow-Headers']='Authorization, Content-Length'
+      response['Access-Control-Allow-Origin'] = '*'
+      response['Access-Control-Allow-Methods'] = 'PUT, POST, HEAD, GET, OPTIONS'
+      response['Access-Control-Allow-Headers'] = 'Authorization, Content-Length'
     end
 
     private
