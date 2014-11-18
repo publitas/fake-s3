@@ -234,6 +234,7 @@ module FakeS3
 
       response['Content-Type'] = 'text/xml'
       response['Access-Control-Allow-Origin']='*'
+      response['Access-Control-Allow-Headers']='Authorization, Content-Length'
     end
 
     def do_DELETE(request,response)
@@ -254,6 +255,7 @@ module FakeS3
     def do_OPTIONS(request, response)
       super
       response["Access-Control-Allow-Origin"]="*"
+      response['Access-Control-Allow-Headers']='Authorization, Content-Length'
     end
 
     private
