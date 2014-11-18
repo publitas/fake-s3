@@ -172,8 +172,9 @@ module FakeS3
         response.header['ETag'] = "\"#{real_obj.md5}\""
       end
 
-      response["Access-Control-Allow-Origin"]="*"
-      response['Access-Control-Allow-Headers']='Authorization, Content-Length, ETag'
+      response['Access-Control-Allow-Origin']   = '*'
+      response['Access-Control-Allow-Headers']  = 'Authorization, Content-Length, ETag'
+      response['Access-Control-Expose-Headers'] = 'ETag'
     end
 
     def do_POST(request,response)
@@ -235,9 +236,11 @@ module FakeS3
         raise WEBrick::HTTPStatus::BadRequest
       end
 
-      response['Content-Type'] = 'text/xml'
-      response['Access-Control-Allow-Origin']='*'
-      response['Access-Control-Allow-Headers']='Authorization, Content-Length'
+      response['Content-Type']                  = 'text/xml'
+      response['Access-Control-Allow-Origin']   = '*'
+      response['Access-Control-Allow-Headers']  = 'Authorization, Content-Length'
+      response['Access-Control-Expose-Headers'] = 'ETag'
+
     end
 
     def do_DELETE(request,response)
@@ -257,9 +260,10 @@ module FakeS3
 
     def do_OPTIONS(request, response)
       super
-      response['Access-Control-Allow-Origin'] = '*'
-      response['Access-Control-Allow-Methods'] = 'PUT, POST, HEAD, GET, OPTIONS'
-      response['Access-Control-Allow-Headers'] = 'Authorization, Content-Length, ETag'
+      response['Access-Control-Allow-Origin']   = '*'
+      response['Access-Control-Allow-Methods']  = 'PUT, POST, HEAD, GET, OPTIONS'
+      response['Access-Control-Allow-Headers']  = 'Authorization, Content-Length, ETag'
+      response['Access-Control-Expose-Headers'] = 'ETag'
     end
 
     private
