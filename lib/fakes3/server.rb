@@ -141,6 +141,8 @@ module FakeS3
       # TODO: maybe not the best check whether this is a multipart request
       return do_multipartPUT(request, response) if request.request_uri.query
 
+      s_req = normalize_request(request)
+
       response.status = 200
       response.body = ""
       response['Content-Type'] = "text/xml"
@@ -178,6 +180,8 @@ module FakeS3
           s_req.bucket    , s_req.object,
           request
         )
+
+        response.body = XmlAdapter.copy_object_result real_obj
       else
         bucket_obj  = @store.get_bucket(s_req.bucket)
         real_obj    = @store.store_object_part(
@@ -185,6 +189,9 @@ module FakeS3
           upload_id , part_number,
           request
         )
+
+        response.body   = ""
+        response.header['ETag']  = "\"#{real_obj.md5}\""
       end
 
       response['Access-Control-Allow-Origin']   = '*'
@@ -192,8 +199,6 @@ module FakeS3
       response['Access-Control-Expose-Headers'] = 'ETag'
 
       response.status = 200
-      response.body   = ""
-      response.header['ETag']  = "\"#{real_obj.md5}\""
     end
 
     def do_POST(request,response)
