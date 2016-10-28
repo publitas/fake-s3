@@ -460,7 +460,7 @@ module FakeS3
       s_req.path = webrick_req.path
       s_req.is_path_style = true
 
-      if !@root_hostnames.include?(host)
+      if !@root_hostnames.include?(host) && host =~ /^(.+).s3.amazonaws.com$/
         s_req.bucket = host.split(".")[0]
         s_req.is_path_style = false
       end
