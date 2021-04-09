@@ -29,6 +29,10 @@ module FakeS3
 
         #pre-load objects into bucket, so ListObjects calls work.
         Dir[File.join(bucket,'/**/.fakes3_metadataFFF')].each do |fullpath|
+          content_file = Pathname.new("#{fullpath}/content")
+          metadata_file = Pathname.new("#{fullpath}/metadata")
+          next unless content_file.exist? && metadata_file.exist?
+
           key = fullpath.sub('/.fakes3_metadataFFF', '').sub(bucket + '/', '')
           object = get_object(bucket_name, key, 'norequest')
           bucket_obj.add(object)
